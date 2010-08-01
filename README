@@ -1,0 +1,13 @@
+This is an early version with rough edges. The motivation for
+writing this has been to improve my ability to write idiomatic 
+Scala.
+
+Since Voldemort isn't yet in any mainstream Maven repository you 
+will need do edit ./project/build/ScalmertProject.scala to point
+to a local repository that has voldemort-0.81.jar and 
+voldemort-0.81-sources.jar installed.
+
+Keep in mind that Voldemort's binary JSON serializer expects Java
+collections rather than Scala collections. 
+
+Feedback, criticism and patches are welcome.
