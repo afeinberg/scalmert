@@ -5,8 +5,8 @@ import voldemort.serialization.StringSerializer
 import scala.collection.mutable.Map
 
 import voldemort.scalmert.Implicits._
+import voldemort.scalmert.versioning._
 import voldemort.client.MockStoreClientFactory
-import voldemort.versioning.Versioned
 
 /**
  * @author alex
@@ -49,7 +49,7 @@ class StoreClientSpec extends Specification {
   "applyUpdate" should {
     "work with default maxTries" in {
       client.applyUpdate { c =>
-        val v = c.get("moo") getOrElse new Versioned[String]("cow")
+        val v = c.get("moo") getOrElse Versioned("cow")
         c.put("moo", v)
       } mustBe true
       val v = client.getValue("moo") getOrElse fail("get doesn't work after applyUpdate")
@@ -59,7 +59,7 @@ class StoreClientSpec extends Specification {
 
     "work with custom maxTries" in {
       client.applyUpdate(100) { c =>
-        val v = c.get("meow") getOrElse new Versioned[String]("cat")
+        val v = c.get("meow") getOrElse Versioned("cat")
         c.put("meow", v)
       } mustBe true
       val v = client.getValue("meow") getOrElse fail("get doesn't work after applyUpdate")
@@ -70,7 +70,7 @@ class StoreClientSpec extends Specification {
 	
 	"storeClient" should {
 		"implement a mutable map" in {
-			client + ("mutable" -> new Versioned("map"))
+			client + ("mutable" -> Versioned("map"))
 			val v = client("mutable") 
 			v.getValue mustEqual "map"
 			client - "mutable"
