@@ -1,9 +1,10 @@
-package voldemort.scalmert
+package voldemort.scalmert.client
 
 import org.specs.Specification
 import voldemort.serialization.StringSerializer
+import scala.collection.mutable.Map
 
-import Implicits._
+import voldemort.scalmert.Implicits._
 import voldemort.client.MockStoreClientFactory
 import voldemort.versioning.Versioned
 
@@ -66,4 +67,20 @@ class StoreClientSpec extends Specification {
       v mustEqual "cat"
     }
    }
+	
+	"storeClient" should {
+		"implement a mutable map" in {
+			client + ("mutable" -> new Versioned("map"))
+			val v = client("mutable") 
+			v.getValue mustEqual "map"
+			client - "mutable"
+			val exceptionCaught = try {	
+					client("mutable") mustBe None
+					false
+				} catch {
+					case e => true
+				}
+			exceptionCaught mustBe true
+		}
+	}
 }
