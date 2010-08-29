@@ -9,18 +9,18 @@ import voldemort.scalmert.Implicits._
 import voldemort.scalmert.versioning._
 
 /**
-	*	@author alex
-	*/
+  *  @author alex
+  */
 
 class  StoreClientFactorySpec extends Specification {
-	val serializer = new StringSerializer
-  val factory:StoreClientFactory = new MockStoreClientFactory(serializer, serializer)		
-	val client:StoreClient[String, String] = factory.getStoreClient[String, String]("test")
-	
-	"factory" should {
-		"return a valid StoreClient" in {
-			client + ("hello" -> Versioned("world"))
-			client("hello").getValue mustEqual "world"
-		}
-	}
+  val serializer = new StringSerializer
+  val factory:StoreClientFactory = new MockStoreClientFactory(serializer, serializer)    
+  val client:StoreClient[String, String] = factory.getStoreClient[String, String]("test")
+  
+  "factory" should {
+    "return a valid StoreClient" in {
+      client + ("hello" -> Versioned("world"))
+      client("hello").getValue mustEqual "world"
+    }
+  }
 }

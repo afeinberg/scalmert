@@ -31,42 +31,42 @@ class StoreClient[K, V](client: JStoreClient[K, V]) extends MutableMap[K, Versio
       Some(v)
   }
 
-	override def + [V1 >: Versioned[V]](kv: (K, V1)) = {
-		val v = kv._2.asInstanceOf[Versioned[V]]
-		put(kv._1, v)
-		this.asInstanceOf[MutableMap[K, V1]]
-	}
+  override def + [V1 >: Versioned[V]](kv: (K, V1)) = {
+    val v = kv._2.asInstanceOf[Versioned[V]]
+    put(kv._1, v)
+    this.asInstanceOf[MutableMap[K, V1]]
+  }
 
-	override def -(key: K): StoreClient[K, V] = { 
-		delete(key)
-		this
-	}
-	
-	override def -=(key: K) = {
-		delete(key)
-		this
-	}
+  override def -(key: K): StoreClient[K, V] = { 
+    delete(key)
+    this
+  }
+  
+  override def -=(key: K) = {
+    delete(key)
+    this
+  }
 
-	override def +=(kv: (K, Versioned[V])) = {
-		put(kv._1, kv._2)
-		this
-	}
-	
-	override def iterator: Iterator[(K, Versioned[V])] = 
-		throw new UnsupportedOperationException("can't iterate over a voldemort store")
+  override def +=(kv: (K, Versioned[V])) = {
+    put(kv._1, kv._2)
+    this
+  }
+  
+  override def iterator: Iterator[(K, Versioned[V])] = 
+    throw new UnsupportedOperationException("can't iterate over a voldemort store")
 
   def getAll(keys: Iterable[K]): Map[K, Versioned[V]] =
     client.getAll(keys.asJava).asScala[K, Versioned[V]]
 
 
   def put(key: K, value: V) = { 
-		client.put(key, value)
-	}
-	
+    client.put(key, value)
+  }
+  
   override def put(key: K, versioned: Versioned[V]) = {
-		client.put(key, versioned)
-		None
-	}
+    client.put(key, versioned)
+    None
+  }
 
   def putIfNotObsolete(key: K, versioned: Versioned[V]): Boolean =
     client.putIfNotObsolete(key, versioned)

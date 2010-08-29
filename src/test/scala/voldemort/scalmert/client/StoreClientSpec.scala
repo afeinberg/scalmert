@@ -67,20 +67,20 @@ class StoreClientSpec extends Specification {
       v mustEqual "cat"
     }
    }
-	
-	"storeClient" should {
-		"implement a mutable map" in {
-			client + ("mutable" -> Versioned("map"))
-			val v = client("mutable") 
-			v.getValue mustEqual "map"
-			client - "mutable"
-			val exceptionCaught = try {	
-					client("mutable") mustBe None
-					false
-				} catch {
-					case e => true
-				}
-			exceptionCaught mustBe true
-		}
-	}
+  
+  "storeClient" should {
+    "implement a mutable map" in {
+      client + ("mutable" -> Versioned("map"))
+      val v = client("mutable") 
+      v.getValue mustEqual "map"
+      client - "mutable"
+      val exceptionCaught = try {  
+          client("mutable") mustBe None
+          false
+        } catch {
+          case e => true
+        }
+      exceptionCaught mustBe true
+    }
+  }
 }

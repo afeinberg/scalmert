@@ -23,7 +23,7 @@ class StoreClientFactory(inner: JStoreClientFactory) extends JStoreClientFactory
     inner.getStoreClient[K, V](storeName, resolver)
 
   def getStoreClient[K, V](storeName: String): JStoreClient[K, V] = inner.getStoreClient[K, V](storeName)
-	
+  
   import scalaj.collection.Imports._
   def getStoreClient[K, V](storeName: String, resolver: Seq[Versioned[V]] => Seq[Versioned[V]]): JStoreClient[K, V]= {
     val ir:InconsistencyResolver[Versioned[V]] = new InconsistencyResolver[Versioned[V]] {
