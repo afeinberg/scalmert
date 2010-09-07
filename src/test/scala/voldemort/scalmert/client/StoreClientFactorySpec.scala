@@ -38,7 +38,7 @@ class  StoreClientFactorySpec extends Specification {
         val versions = results.map(_.getVersion)
         val mergedVersion = versions.foldLeft(new VectorClock) { 
           (clock, ver) =>
-            clock.merge(ver.asInstanceOf[VectorClock]);
+            clock.merge(ver.asInstanceOf[VectorClock])
         }
         val value = (results.map(_.getValue).foldLeft(new StringBuffer) {
           (sb, str) =>
