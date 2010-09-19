@@ -73,14 +73,14 @@ class StoreClient[K, V](client: JStoreClient[K, V]) extends MutableMap[K, Versio
 
   def applyUpdate(updateFn: StoreClient[K, V] => Unit): Boolean = {
     client.applyUpdate(new UpdateAction[K, V] {
-      def update(storeClient: JStoreClient[K, V]) = updateFn(new StoreClient(storeClient))
+      def update(storeClient: JStoreClient[K, V]) = updateFn(StoreClient.this)
     })
   }
 
   def applyUpdate(maxTries: Int)(updateFn: StoreClient[K, V] => Unit,
                                  rollbackFn: => Unit = {}): Boolean = {
     client.applyUpdate(new UpdateAction[K, V] {
-      def update(storeClient: JStoreClient[K, V]) = updateFn(new StoreClient(storeClient))
+      def update(storeClient: JStoreClient[K, V]) = updateFn(StoreClient.this)
 
       override def rollback() = rollbackFn
     }, maxTries)
