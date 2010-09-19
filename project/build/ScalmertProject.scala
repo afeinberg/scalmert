@@ -6,7 +6,7 @@ extends DefaultProject(info) with IdeaProject {
   val scalaToolsRepo = "Scala-Tools Maven Repository" at
   "http://nexus.scala-tools.org/content/repositories/snapshots/"
   
-  val specs = "org.scala-tools.testing" %% "specs" % "1.6.5-SNAPSHOT" % "test"
+  val specs = "org.scala-tools.testing" %% "specs" % "1.6.5" % "test"
 
   val scalajCollections = "org.scalaj" %% "scalaj-collection" % "1.0" 
   val googleCollections = "com.google.collections" % "google-collections" % "1.0"
