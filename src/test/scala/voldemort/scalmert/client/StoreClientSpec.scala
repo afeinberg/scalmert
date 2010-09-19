@@ -19,7 +19,7 @@ class StoreClientSpec extends Specification {
 
   "get" should {
     "return value put" in {
-      client.put("hello", "world")
+      client("hello") = "world"
       val actual = client.get("hello") getOrElse fail("get doesn't work after put")
 
       actual.getValue mustEqual "world"
@@ -28,7 +28,7 @@ class StoreClientSpec extends Specification {
 
   "getValue" should {
     "return the value put" in {
-      client.put("hello", "world")
+      client += ("hello", "world")
       val actual = client.getValue("hello") getOrElse fail("getValue doesn't work after put")
 
       actual mustEqual "world"
@@ -37,8 +37,8 @@ class StoreClientSpec extends Specification {
 
   "getAll" should {
     "return a map of keys to values" in {
-      client.put("hello", "world")
-      client.put("foo", "bar")
+      client("hello") = "world"
+      client("foo") = "bar"
       val results = client.getAll(List("hello", "foo"))
 
       results("hello").getValue mustEqual "world"
@@ -50,7 +50,7 @@ class StoreClientSpec extends Specification {
     "work with default maxTries" in {
       client.applyUpdate { c =>
         val v = c.get("moo") getOrElse Versioned("cow")
-        c.put("moo", v)
+        c("moo") = v
       } mustBe true
       val v = client.getValue("moo") getOrElse fail("get doesn't work after applyUpdate")
 
@@ -60,21 +60,23 @@ class StoreClientSpec extends Specification {
     "work with custom maxTries" in {
       client.applyUpdate(100) { c =>
         val v = c.get("meow") getOrElse Versioned("cat")
-        c.put("meow", v)
+        c("meow") = v
       } mustBe true
       val v = client.getValue("meow") getOrElse fail("get doesn't work after applyUpdate")
 
       v mustEqual "cat"
     }
    }
-  
-  "storeClient" should {
+
+  "asMap" should {
     "implement a mutable map" in {
-      client + ("mutable" -> Versioned("map"))
-      val v = client("mutable") 
+      val map = client.asMap
+      map.isInstanceOf[collection.mutable.Map[_, _]] must beTrue
+      map += ("mutable" -> Versioned("map"))
+      val v = map("mutable")
       v.getValue mustEqual "map"
-      client - "mutable"
-      val exceptionCaught = try {  
+      map -= "mutable"
+      val exceptionCaught = try {
           client("mutable") mustBe None
           false
         } catch {

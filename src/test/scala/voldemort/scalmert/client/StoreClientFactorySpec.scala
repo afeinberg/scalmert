@@ -27,7 +27,7 @@ class  StoreClientFactorySpec extends Specification {
 
   "factory" should {
     "return a valid StoreClient" in {
-      client + ("hello" -> Versioned("world"))
+      client("hello") = Versioned("world")
       client("hello").getValue mustEqual "world"
     }
   }
@@ -48,9 +48,9 @@ class  StoreClientFactorySpec extends Specification {
         Seq[JVersioned[String]](Versioned(value, mergedVersion))
       }
 
-      val c:StoreClient[String, String] = factory.getStoreClient[String, String]("test", resolver)
-      c + ("quux" -> Versioned("foo", getClock(List(0))))
-      c + ("quux" -> Versioned("bar", getClock(List(1))))
+      val c: StoreClient[String, String] = factory.getStoreClient[String, String]("test", resolver)
+      c += ("quux", Versioned("foo", getClock(List(0))))
+      c += ("quux", Versioned("bar", getClock(List(1))))
       c("quux").getValue mustEqual "foobar"
     }
   }
